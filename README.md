@@ -1,4 +1,4 @@
-![SSE CI/CD](![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg))
+![SSE CI/CD](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 
 # Automation Exercise
 
