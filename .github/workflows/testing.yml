@@ -56,7 +56,7 @@ jobs:
         run: coverage report -m
       - name: "Convert coverage report into XML format"
         run: coverage xml
-      - name: "Create coverage XML artifact"
+      - name: "Create artifact for coverage XML"
         uses: actions/upload-artifact@v2
         with:
           name: artifact-coverage-report-xml
