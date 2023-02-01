@@ -1,0 +1,64 @@
+name: Testing Workflow for SSE
+
+on: [push]
+
+jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: "Install black"
+        run: pip install black
+      - name: "Run style check and format"
+        run: black .
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: "Install numpy and matplotlib"
+        run: pip install numpy matplotlib
+      - name: "Install pytest"
+        run: pip install -U pytest
+      - name: "Install coverage"
+        run: pip install -U coverage
+      - name: "Run unittest"
+        run: python -m pytest
+      - name: "Run coverage"
+        run: coverage run -m pytest
+      - name: "Create .gitignore"
+        run: touch .gitignore
+      - name: "Add .coverage to .gitignore"
+        run: echo .coverage >> .gitignore
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-coverage
+          path: .coverage
+          retention-days: 1
+  coverage_report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: "Download artifact"
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact-coverage
+      - name: "Create coverage report"
+        run: coverage report -m
+      - name: "Convert coverage report into XML format"
+        run: coverage xml
+      - name: "Create coverage XML artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-coverage-report-xml
+          path: coverage.xml
+          retention-days: 14
