@@ -1,4 +1,4 @@
-name: Testing Workflow for SSE
+name: SSE CI/CD
 
 on: [push]
 
